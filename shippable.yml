@@ -1,40 +1,28 @@
-# Language setting
 language: node_js
 
-# Version number
 node_js:
-  - 0.10.25
-
-# Dependency of Protractor
-jdk:
-   - openjdk7
+  - "0.10"
 
 addons:
-  firefox: "23.0"
+  firefox: "19.0"
 
 services:
   - selenium
 
-# The path for Xunit to output test reports
-env:
-  - XUNIT_FILE=shippable/testresults/result.xml
-
 install:
-  - npm install -g -q protractor
+  - npm install -g protractor
 
-# Create directories for test and coverage reports
 before_script:
-  - mkdir -p shippable/testresults
-  - mkdir -p shippable/codecoverage
+  - "export DISPLAY=:99.0"
+  - "/etc/init.d/xvfb start"
 
-# Running the tests with grunt
 script:
-  - webdriver-manager stop
-  - webdriver-manager update
-  - webdriver-manager start
+  - protractor --version
   - protractor conf.js
 
-# Tell istanbul to generate a coverage report
 after_script:
-  - ./node_modules/.bin/istanbul cover grunt -- -u tdd
-  - ./node_modules/.bin/istanbul report cobertura --dir  shippable/codecoverage/
+  - "/etc/init.d/xvfb stop"
+
+notifications:
+  email:
+    - exampleone@org.com
