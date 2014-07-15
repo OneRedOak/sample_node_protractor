@@ -5,9 +5,22 @@ language: node_js
 node_js:
   - 0.10.25
 
+# Dependency of Protractor
+jdk:
+   - openjdk7
+
+addons:
+  firefox: "23.0"
+
+services:
+  - selenium
+
 # The path for Xunit to output test reports
 env:
   - XUNIT_FILE=shippable/testresults/result.xml
+
+install:
+  - npm install -g -q protractor
 
 # Create directories for test and coverage reports
 before_script:
@@ -16,7 +29,10 @@ before_script:
 
 # Running the tests with grunt
 script:
-  - grunt
+  - webdriver-manager stop
+  - webdriver-manager update
+  - webdriver-manager start
+  - protractor conf.js
 
 # Tell istanbul to generate a coverage report
 after_script:
