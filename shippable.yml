@@ -12,9 +12,11 @@ services:
 install:
   - npm install -g istanbul
   - npm install -g protractor
-  - npm install jasmine-reporters
+  - npm install jasmine-reporters@1.0.0
 
 before_script:
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
   - "export DISPLAY=:99.0"
   - "/etc/init.d/xvfb start"
 
@@ -24,8 +26,6 @@ script:
 
 after_script:
   - "/etc/init.d/xvfb stop"
-  - mkdir -p shippable/testresults
-  - mkdir -p shippable/codecoverage
   - istanbul cover conf.js -- -u tdd
   - istanbul report cobertura --dir  shippable/codecoverage/
 

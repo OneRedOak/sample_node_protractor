@@ -3,5 +3,11 @@ exports.config = {
   specs: ['spec.js'],
   capabilities: {
     browserName: "firefox"
+  },
+  onPrepare: function() {
+    require('jasmine-reporters');
+    jasmine.getEnv().addReporter(
+      new jasmine.JUnitXmlReporter('shippable/testresults', true, true, 'junit')
+    );
   }
 };
