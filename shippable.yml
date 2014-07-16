@@ -10,7 +10,9 @@ services:
   - selenium
 
 install:
+  - npm install -g istanbul
   - npm install -g protractor
+  - npm install jasmine-reporters
 
 before_script:
   - "export DISPLAY=:99.0"
@@ -22,6 +24,10 @@ script:
 
 after_script:
   - "/etc/init.d/xvfb stop"
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
+  - istanbul cover conf.js -- -u tdd
+  - istanbul report cobertura --dir  shippable/codecoverage/
 
 notifications:
   email:
